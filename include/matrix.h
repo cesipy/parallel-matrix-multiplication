@@ -9,7 +9,7 @@
 #define MIN_RANDOM -1
 
 void print_matrix(size_t rows, size_t cols, int** matrix);
-void multiplication_squared(size_t rows, size_t cols, int** a, int** b);
+int** multiplication_squared(size_t rows, size_t cols, int** a, int** b);
 
 int** generate_matrix(size_t rows, size_t cols);
 void free_matrix(size_t rows, size_t cols, int** a);
