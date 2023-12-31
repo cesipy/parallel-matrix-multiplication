@@ -3,3 +3,4 @@ matrix
 a.out
 *.o
 src/*.o
+test
