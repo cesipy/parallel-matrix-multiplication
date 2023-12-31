@@ -57,7 +57,7 @@ void tests()
     initialize_matrix(sz, sz, a, test_matrix1);
     initialize_matrix(sz, sz, b, test_matrix2);
 
-    int** res = multiplication_squared(sz, sz, a, b);
+    int** res = matrix_multiplication_squared(sz, sz, a, b);
     
     test_result(sz, sz, res, result_matrix_1x2);
     // TODO: handle tests
