@@ -11,7 +11,7 @@
 #define PADDING 7
 
 void print_matrix(size_t rows, size_t cols, int** matrix);
-int** multiplication_squared(size_t rows, size_t cols, int** a, int** b);
+int** matrix_multiplication_squared(size_t rows, size_t cols, int** a, int** b);
 
 int** generate_matrix(size_t rows, size_t cols);
 void free_matrix(size_t rows, size_t cols, int** a);

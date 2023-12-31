@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
 
     // measure exectution time
     clock_t start = clock();
-    int** result =  multiplication_squared(sz, sz, a, b);
+    int** result =  matrix_multiplication_squared(sz, sz, a, b);
     clock_t end  = clock();
 
     float diff = (float) (end - start) / CLOCKS_PER_SEC;
