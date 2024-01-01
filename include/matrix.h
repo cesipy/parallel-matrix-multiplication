@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <pthread.h>
 
 #define MAX_RANDOM 100
 #define MIN_RANDOM -1
@@ -17,12 +18,13 @@ int** generate_matrix(size_t rows, size_t cols);
 void free_matrix(size_t rows, size_t cols, int** a);
 int** allocate_matrix(size_t rows, size_t cols);
 
+
+/* from test.c */
+
+void initialize_matrix(size_t rows, size_t cols, int** alloc_matrix, int matrix[rows][cols]);
 int test_matrix1[3][3];
-
 int test_matrix2[3][3];
-
 int result_matrix_1x2[3][3];
-
 int test_matrix3[4][4];
 
 

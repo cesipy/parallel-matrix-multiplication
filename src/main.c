@@ -6,7 +6,7 @@ int main(int argc, char* argv[])
 {
     srand(time(0));
 
-    size_t sz = 1000;
+    size_t sz = 10;
     int** a = generate_matrix(sz, sz);
     int** b = generate_matrix(sz, sz);
 

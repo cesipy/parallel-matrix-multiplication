@@ -74,3 +74,28 @@ int** matrix_multiplication_squared(size_t rows, size_t cols, int** a, int** b)
     print_matrix(rows, cols, result_matrix);
     return result_matrix;
 }
+
+void initialize_matrix(size_t rows, size_t cols, int** alloc_matrix, int matrix[rows][cols]) 
+{
+    for (int i=0; i<rows; i++) 
+    {
+        for (int j=0; j<cols; j++)
+        {
+            alloc_matrix[i][j] = matrix[i][j];
+        }
+    }
+} 
+
+
+int initialize_parallel(size_t sz, int** a) 
+{
+    pthread_t threads[sz];
+
+    /* initialize threads */
+    for (int i=0; i<sz; i++) 
+    {
+        int status = pthread_create(&threads[i], NULL, NULL, NULL);
+    }
+
+    return 1;
+}

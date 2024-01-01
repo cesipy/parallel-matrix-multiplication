@@ -3,32 +3,6 @@
 #include <assert.h>
 
 
-int** allocate_test_matrix(size_t rows, size_t cols)
-{
-    int** allocated_matrix = (int**)malloc(rows * cols * sizeof(int*));
-    // TOOD: error handling
-
-    for (int i=0; i<rows; i++) 
-    {
-        allocated_matrix[i] = (int* )malloc(cols * sizeof(int));
-    }
-
-    return allocated_matrix;
-}
-
-
-void initialize_matrix(size_t rows, size_t cols, int** alloc_matrix, int matrix[rows][cols]) 
-{
-    for (int i=0; i<rows; i++) 
-    {
-        for (int j=0; j<cols; j++)
-        {
-            alloc_matrix[i][j] = matrix[i][j];
-        }
-    }
-} 
-
-
 int test_result(size_t rows, size_t cols, int** matrix_to_test, int valid_result[rows][cols])
 {
     for (int i=0; i<rows; i++) 
@@ -51,8 +25,8 @@ int test_result(size_t rows, size_t cols, int** matrix_to_test, int valid_result
 void tests()
 {
     size_t sz = 3;
-    int** a = allocate_test_matrix(sz, sz);
-    int** b = allocate_test_matrix(sz, sz);
+    int** a = allocate_matrix(sz, sz);
+    int** b = allocate_matrix(sz, sz);
 
     initialize_matrix(sz, sz, a, test_matrix1);
     initialize_matrix(sz, sz, b, test_matrix2);
