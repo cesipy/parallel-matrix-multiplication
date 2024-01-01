@@ -134,7 +134,6 @@ int initialize_threads(int size, int** a, int** b)
         }
     }
 
-
     /* initialize threads */
     for (int i=0; i<num_threads; i++)
     {
@@ -155,6 +154,9 @@ int initialize_threads(int size, int** a, int** b)
         int status = pthread_join(threads[i], NULL);
     }
     
+    printf("\n -\n\nparallel computation: \n");
+    print_matrix(size, size, result_matrix);
+
     // free argument-array
     for (int i=0; i<num_threads; i++)
     {
