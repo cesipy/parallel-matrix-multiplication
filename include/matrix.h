@@ -17,6 +17,7 @@ int** matrix_multiplication_squared(size_t rows, size_t cols, int** a, int** b);
 int** generate_matrix(size_t rows, size_t cols);
 void free_matrix(size_t rows, size_t cols, int** a);
 int** allocate_matrix(size_t rows, size_t cols);
+int initialize_threads(int size, int** a, int** b);
 
 
 /* from test.c */
@@ -26,6 +27,15 @@ int test_matrix1[3][3];
 int test_matrix2[3][3];
 int result_matrix_1x2[3][3];
 int test_matrix3[4][4];
+
+
+typedef struct {
+    int** a;
+    int** b;
+    int** result_matrix;
+    int a_i;
+    int a_j;
+}param_t;
 
 
 
