@@ -71,7 +71,7 @@ int** matrix_multiplication_squared(size_t rows, size_t cols, int** a, int** b)
         }
     }
 
-    print_matrix(rows, cols, result_matrix);
+   // print_matrix(rows, cols, result_matrix);
     return result_matrix;
 }
 
@@ -94,46 +94,45 @@ void* thread_function(void* arg)
     int** a   = param->a;
     int** b   = param->b;
     int a_i   = param->a_i;
-    int a_j   = param->a_j;
+    int a_j   = 0;
     int sz    = param->sz;
     int sum   = 0;
 
-    for (int k=0; k<sz; k++)
+    for (int i=0; i<sz; i++)
     {
-        sum += a[a_i][k] * b[k][a_j];
+        sum = 0;
+        for (int j=0; j<sz; j++)
+        {
+            sum += a[a_i][j] * b[j][i];
+        }
+        res[a_i][a_j] = sum;
+        a_j += 1;
     }
-
-    res[a_i][a_j] = sum;
-
+    
     return NULL;
 }
 
 
-// creates a thread for each entry. therefore, size*size threads are created. because of the overhead for each thread, the current
+// creates a thread for each entry. therefore, size*size threads are created. 
+// because of the overhead for each thread, the current
 // implemetation is very unperformant.
 int initialize_threads(int size, int** a, int** b) 
 {
-    int       num_threads = size * size;
+    int       num_threads = size;
     pthread_t threads[num_threads];
     param_t*  arguments[num_threads];
-    int       index = 0;
 
     int**     result_matrix = allocate_matrix(size, size);
 
     for (int i=0; i<size; i++)
     {
-        for (int j=0; j<size; j++)
-        {
-            arguments[index] = malloc(sizeof(param_t));
-            arguments[index]->a = a;
-            arguments[index]->b = b;
-            arguments[index]->result_matrix = result_matrix;
-            arguments[index]->a_i = i;
-            arguments[index]->a_j = j;
-            arguments[index]->sz = size;
+        arguments[i] = malloc(sizeof(param_t));
+        arguments[i]->a = a;
+        arguments[i]->b = b;
+        arguments[i]->result_matrix = result_matrix;
+        arguments[i]->a_i = i;
+        arguments[i]->sz = size;
 
-            index += 1;
-        }
     }
 
     /* initialize threads */
@@ -157,6 +156,7 @@ int initialize_threads(int size, int** a, int** b)
     }
     
     printf("\n -\n\nparallel computation: \n");
+    //print_matrix(size, size, result_matrix);
 
     // free argument-array
     for (int i=0; i<num_threads; i++)
@@ -166,4 +166,11 @@ int initialize_threads(int size, int** a, int** b)
 
     return 1;
     
+}
+
+double get_current_time()
+{
+    struct timespec now;
+    clock_gettime(CLOCK_REALTIME, &now);
+    return now.tv_sec + now.tv_nsec*1e-9;
 }
