@@ -35,6 +35,7 @@ typedef struct {
     int** result_matrix;
     int a_i;
     int a_j;
+    int sz;         // size for squared matrix
 }param_t;
 
 

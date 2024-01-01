@@ -90,8 +90,21 @@ void initialize_matrix(size_t rows, size_t cols, int** alloc_matrix, int matrix[
 void* thread_function(void* arg) 
 {
     param_t* param = arg;
+    int** res = param->result_matrix;
+    int** a   = param->a;
+    int** b   = param->b;
+    int a_i   = param->a_i;
+    int a_j   = param->a_j;
+    int sz    = param->sz;
+    int sum   = 0;
 
-    //TODO: multiplication logic
+    for (int k=0; k<sz; k++)
+    {
+        sum += a[a_i][k] * b[k][a_j];
+    }
+
+    res[a_i][a_j] = sum;
+
     return NULL;
 }
 
@@ -115,6 +128,7 @@ int initialize_threads(int size, int** a, int** b)
             arguments[index]->result_matrix = result_matrix;
             arguments[index]->a_i = i;
             arguments[index]->a_j = j;
+            arguments[index]->sz = size;
 
             index += 1;
         }
@@ -140,7 +154,6 @@ int initialize_threads(int size, int** a, int** b)
     {
         int status = pthread_join(threads[i], NULL);
     }
-
     
     // free argument-array
     for (int i=0; i<num_threads; i++)
