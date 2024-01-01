@@ -6,7 +6,7 @@ int main(int argc, char* argv[])
 {
     srand(time(0));
 
-    size_t sz = 10;
+    size_t sz = 100;
     int** a = generate_matrix(sz, sz);
     int** b = generate_matrix(sz, sz);
 
@@ -23,7 +23,14 @@ int main(int argc, char* argv[])
     float diff = (float) (end - start) / CLOCKS_PER_SEC;
     printf("exec. time: %f\n", diff);
 
+
+    // parallel execution
+    start = clock();
     initialize_threads(sz, a, b);
+    end   = clock();
+    
+    diff = (float) (end - start) / CLOCKS_PER_SEC;
+    printf("exec. time: %f\n", diff);
 
     free_matrix(sz, sz, a);
     free_matrix(sz, sz, b);

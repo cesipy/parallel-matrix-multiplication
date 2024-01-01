@@ -109,6 +109,8 @@ void* thread_function(void* arg)
 }
 
 
+// creates a thread for each entry. therefore, size*size threads are created. because of the overhead for each thread, the current
+// implemetation is very unperformant.
 int initialize_threads(int size, int** a, int** b) 
 {
     int       num_threads = size * size;
@@ -155,7 +157,6 @@ int initialize_threads(int size, int** a, int** b)
     }
     
     printf("\n -\n\nparallel computation: \n");
-    print_matrix(size, size, result_matrix);
 
     // free argument-array
     for (int i=0; i<num_threads; i++)
