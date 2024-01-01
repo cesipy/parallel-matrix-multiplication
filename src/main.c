@@ -23,9 +23,13 @@ int main(int argc, char* argv[])
     float diff = (float) (end - start) / CLOCKS_PER_SEC;
     printf("exec. time: %f\n", diff);
 
+    initialize_threads(sz, a, b);
+
     free_matrix(sz, sz, a);
     free_matrix(sz, sz, b);
     free_matrix(sz, sz, result);
+
+    
 
     return 0;
 }

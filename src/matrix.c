@@ -75,6 +75,7 @@ int** matrix_multiplication_squared(size_t rows, size_t cols, int** a, int** b)
     return result_matrix;
 }
 
+
 void initialize_matrix(size_t rows, size_t cols, int** alloc_matrix, int matrix[rows][cols]) 
 {
     for (int i=0; i<rows; i++) 
@@ -85,3 +86,68 @@ void initialize_matrix(size_t rows, size_t cols, int** alloc_matrix, int matrix[
         }
     }
 } 
+
+void* thread_function(void* arg) 
+{
+    param_t* param = arg;
+
+    //TODO: multiplication logic
+    return NULL;
+}
+
+
+int initialize_threads(int size, int** a, int** b) 
+{
+    int       num_threads = size * size;
+    pthread_t threads[num_threads];
+    param_t*  arguments[num_threads];
+    int       index = 0;
+
+    int**     result_matrix = allocate_matrix(size, size);
+
+    for (int i=0; i<size; i++)
+    {
+        for (int j=0; j<size; j++)
+        {
+            arguments[index] = malloc(sizeof(param_t));
+            arguments[index]->a = a;
+            arguments[index]->b = b;
+            arguments[index]->result_matrix = result_matrix;
+            arguments[index]->a_i = i;
+            arguments[index]->a_j = j;
+
+            index += 1;
+        }
+    }
+
+
+    /* initialize threads */
+    for (int i=0; i<num_threads; i++)
+    {
+       
+        int status = pthread_create(&threads[i], NULL, &thread_function, (void*)arguments[i]);
+        if (status != 0)
+        {
+            perror("thread initialisation");
+            free_matrix(num_threads, num_threads, a);
+            free_matrix(num_threads, num_threads, b),
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    // join all threads
+    for (int i=0; i<num_threads; i++)
+    {
+        int status = pthread_join(threads[i], NULL);
+    }
+
+    
+    // free argument-array
+    for (int i=0; i<num_threads; i++)
+    {
+        free(arguments[i]);
+    }
+
+    return 1;
+    
+}
