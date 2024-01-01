@@ -4,3 +4,4 @@ a.out
 *.o
 src/*.o
 test
+.DS_Store

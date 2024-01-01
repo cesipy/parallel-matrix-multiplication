@@ -85,17 +85,3 @@ void initialize_matrix(size_t rows, size_t cols, int** alloc_matrix, int matrix[
         }
     }
 } 
-
-
-int initialize_parallel(size_t sz, int** a) 
-{
-    pthread_t threads[sz];
-
-    /* initialize threads */
-    for (int i=0; i<sz; i++) 
-    {
-        int status = pthread_create(&threads[i], NULL, NULL, NULL);
-    }
-
-    return 1;
-}
