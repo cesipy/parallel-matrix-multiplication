@@ -18,6 +18,7 @@ int** generate_matrix(size_t rows, size_t cols);
 void free_matrix(size_t rows, size_t cols, int** a);
 int** allocate_matrix(size_t rows, size_t cols);
 int initialize_threads(int size, int** a, int** b);
+double get_current_time();
 
 
 /* from test.c */
