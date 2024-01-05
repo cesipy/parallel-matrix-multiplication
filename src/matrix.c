@@ -1,8 +1,8 @@
 #include "../include/matrix.h"
 
+// generates a random matrix for testing, etc
 int** generate_matrix(size_t rows, size_t cols) 
 {
-    
     int** a = allocate_matrix(rows, cols);
 
     for (int i=0; i<rows; i++) 
@@ -17,7 +17,7 @@ int** generate_matrix(size_t rows, size_t cols)
     return a;
 }
 
-
+// free matrix
 void free_matrix(size_t rows, size_t cols, int** a) 
 {
     for (int i=0; i<rows; i++)
@@ -28,7 +28,7 @@ void free_matrix(size_t rows, size_t cols, int** a)
     free(a);
 }
 
-
+// allocates matrix of of size `rows` x `cols`.
 int** allocate_matrix(size_t rows, size_t cols) 
 {
     int** a = (int**)malloc(rows * sizeof(int*));
@@ -39,6 +39,7 @@ int** allocate_matrix(size_t rows, size_t cols)
 
     return a;
 }
+
 
 void print_matrix(size_t rows, size_t cols, int** matrix)
 {
@@ -53,7 +54,7 @@ void print_matrix(size_t rows, size_t cols, int** matrix)
     }
 }
 
-
+// multiplies two squared matrices.
 int** matrix_multiplication_squared(size_t rows, size_t cols, int** a, int** b)
 {
     int** result_matrix = allocate_matrix(rows, cols);
@@ -71,11 +72,12 @@ int** matrix_multiplication_squared(size_t rows, size_t cols, int** a, int** b)
         }
     }
 
-   // print_matrix(rows, cols, result_matrix);
     return result_matrix;
 }
 
-
+// copies entries from matrix[][] to a int**
+// works good for test matrices, that are not dynamically allocated, 
+// but need dynamic allocation for each thread, so they can work on one matrix in parallel.
 void initialize_matrix(size_t rows, size_t cols, int** alloc_matrix, int matrix[rows][cols]) 
 {
     for (int i=0; i<rows; i++) 
@@ -87,6 +89,8 @@ void initialize_matrix(size_t rows, size_t cols, int** alloc_matrix, int matrix[
     }
 } 
 
+
+// calculates the entries for one row.
 void* thread_function(void* arg) 
 {
     param_t* param = arg;
@@ -113,9 +117,9 @@ void* thread_function(void* arg)
 }
 
 
-// creates a thread for each entry. therefore, size*size threads are created. 
+// creates a thread for each entry. therefore, `size` threads are created. 
 // because of the overhead for each thread, the current
-// implemetation is very unperformant.
+// implemetation is unperformant for more than 1000 rows. 
 int initialize_threads(int size, int** a, int** b) 
 {
     int       num_threads = size;
@@ -124,6 +128,7 @@ int initialize_threads(int size, int** a, int** b)
 
     int**     result_matrix = allocate_matrix(size, size);
 
+    // initialize arguments for thread
     for (int i=0; i<size; i++)
     {
         arguments[i] = malloc(sizeof(param_t));
@@ -135,7 +140,7 @@ int initialize_threads(int size, int** a, int** b)
 
     }
 
-    /* initialize threads */
+    // initialize threads
     for (int i=0; i<num_threads; i++)
     {
        
@@ -154,9 +159,6 @@ int initialize_threads(int size, int** a, int** b)
     {
         int status = pthread_join(threads[i], NULL);
     }
-    
-    printf("\n -\n\nparallel computation: \n");
-    //print_matrix(size, size, result_matrix);
 
     // free argument-array
     for (int i=0; i<num_threads; i++)
@@ -164,9 +166,10 @@ int initialize_threads(int size, int** a, int** b)
         free(arguments[i]);
     }
 
-    return 1;
-    
+    free_matrix(size, size, result_matrix);
+    return 1;    
 }
+
 
 double get_current_time()
 {

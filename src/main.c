@@ -42,7 +42,7 @@ int main(int argc, char* argv[])
 {
     srand(time(0));
 
-    size_t sz = 2000;
+    size_t sz = 500;
 
     // clock measures CPU time
     clock_t start = clock();
