@@ -4,6 +4,10 @@
 int** generate_matrix(size_t rows, size_t cols) 
 {
     int** a = allocate_matrix(rows, cols);
+    if (a == NULL) 
+    {
+        exit(EXIT_FAILURE);
+    }
 
     for (int i=0; i<rows; i++) 
     {
@@ -32,9 +36,20 @@ void free_matrix(size_t rows, size_t cols, int** a)
 int** allocate_matrix(size_t rows, size_t cols) 
 {
     int** a = (int**)malloc(rows * sizeof(int*));
+    if (a == NULL) 
+    {
+        perror("allocationg matrix");
+        return NULL;
+    }
+
     for (int i=0; i<rows; i++) 
     {
         a[i] = (int*)malloc(cols * sizeof(int));
+        if (a[i] == NULL) 
+        {
+            perror("allocationg matrix");
+            return NULL;
+        }   
     }
 
     return a;
