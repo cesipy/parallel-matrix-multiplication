@@ -24,10 +24,10 @@ double get_current_time();
 /* from test.c */
 
 void initialize_matrix(size_t rows, size_t cols, int** alloc_matrix, int matrix[rows][cols]);
-int test_matrix1[3][3];
-int test_matrix2[3][3];
-int result_matrix_1x2[3][3];
-int test_matrix3[4][4];
+// int test_matrix1[3][3];
+// int test_matrix2[3][3];
+// int result_matrix_1x2[3][3];
+// int test_matrix3[4][4];
 
 
 typedef struct {

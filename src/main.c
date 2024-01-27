@@ -42,8 +42,14 @@ int main(int argc, char* argv[])
 {
     srand(time(0));
 
-    size_t sz = 500;
+    size_t sz = 2000;
 
+    printf("multiplication serial: \n");
+    multiplication_serial(sz);
+    printf("\n");
+
+
+    printf("multiplication parallel: \n");
     // clock measures CPU time
     clock_t start = clock();
     multiplication_parallel(sz);
