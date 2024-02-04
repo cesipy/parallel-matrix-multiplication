@@ -23,5 +23,27 @@ Here you can observe, that using the four threads is overall faster. But the ove
 
 ### Eight core machine
 
+On an eight thread machine and a matrix size `sz = 2000` the result is the following:
+
+```bash
+multiplication serial:
+exec. time: 52.474451
+
+multiplication parallel:
+exec. time: 10.248091
+cpu uptime: 74.833354
+```
+
+For matrix size `sz = 4000`:
+
+```bash
+multiplication serial:
+exec. time: 552.366112
+
+multiplication parallel:
+exec. time: 106.235075
+cpu uptime: 769.289494
+```
+
 
 
