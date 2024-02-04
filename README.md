@@ -4,6 +4,9 @@ This small repository compares the performance of multiple threads vs just one t
 
 ## Showcase
 
+This showcase compares the naive approach of having a thread for each row-column combination.
+For example, if there are two 30x30 matrices mutliplied, 30 threads are created.
+
 ### Two core machine with four threads
 
 On a four thread machine and a matrix size `sz = 2000` the result is the following:
