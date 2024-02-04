@@ -10,6 +10,8 @@
 #define MIN_RANDOM -1
 
 #define PADDING 7
+#define NUM_THREADS 4     // how many threads are available on machine/ 
+                          // or how many cores want to be used
 
 void print_matrix(size_t rows, size_t cols, int** matrix);
 int** matrix_multiplication_squared(size_t rows, size_t cols, int** a, int** b);
@@ -17,9 +19,13 @@ int** matrix_multiplication_squared(size_t rows, size_t cols, int** a, int** b);
 int** generate_matrix(size_t rows, size_t cols);
 void free_matrix(size_t rows, size_t cols, int** a);
 int** allocate_matrix(size_t rows, size_t cols);
-int initialize_threads(int size, int** a, int** b);
+int initialize_threads_naive(int size, int** a, int** b);
 double get_current_time();
 
+
+// from new approach, also pretty naive, as it is not really dynamic
+int calculate_num_operations(size_t, size_t);
+int calculate_rest_operations(size_t, size_t);
 
 /* from test.c */
 

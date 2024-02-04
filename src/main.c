@@ -1,5 +1,11 @@
 #include "../include/matrix.h"
 
+
+/**
+ * performs a normal matrix mutliplication using one core. 
+ * is the minimal implementation for a correct computation.
+ * is used to benchmark and compare different implementations.
+*/
 void multiplication_serial(size_t sz)
 {
     int** a = generate_matrix(sz, sz);
@@ -19,6 +25,12 @@ void multiplication_serial(size_t sz)
 }
 
 
+
+/**
+ * performs a matrix multiplication using several threads. for a matrix
+ * with size `sz x sz` there are sz threads created. each thread computes
+ * the result for one row.
+*/
 void multiplication_parallel(size_t sz)
 {
     int** a = generate_matrix(sz, sz);
@@ -26,7 +38,7 @@ void multiplication_parallel(size_t sz)
     int** result = allocate_matrix(sz, sz);
 
     double start = get_current_time();
-    initialize_threads(sz, a, b);
+    initialize_threads_naive(sz, a, b);
     double end = get_current_time();
 
     double diff2 = end - start;
@@ -42,7 +54,7 @@ int main(int argc, char* argv[])
 {
     srand(time(0));
 
-    size_t sz = 2000;
+    size_t sz = 800;
 
     printf("multiplication serial: \n");
     multiplication_serial(sz);
@@ -50,7 +62,7 @@ int main(int argc, char* argv[])
 
 
     printf("multiplication parallel: \n");
-    // clock measures CPU time
+    // clock measures CPU time, as several threads are sed for computation
     clock_t start = clock();
     multiplication_parallel(sz);
     clock_t end   = clock();

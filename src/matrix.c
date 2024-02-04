@@ -106,7 +106,7 @@ void initialize_matrix(size_t rows, size_t cols, int** alloc_matrix, int matrix[
 
 
 // calculates the entries for one row.
-void* thread_function(void* arg) 
+void* thread_function_naive(void* arg) 
 {
     param_t* param = arg;
     int** res = param->result_matrix;
@@ -135,7 +135,7 @@ void* thread_function(void* arg)
 // creates a thread for each entry. therefore, `size` threads are created. 
 // because of the overhead for each thread, the current
 // implemetation is unperformant for more than 1000 rows. 
-int initialize_threads(int size, int** a, int** b) 
+int initialize_threads_naive(int size, int** a, int** b) 
 {
     int       num_threads = size;
     pthread_t threads[num_threads];
@@ -159,7 +159,7 @@ int initialize_threads(int size, int** a, int** b)
     for (int i=0; i<num_threads; i++)
     {
        
-        int status = pthread_create(&threads[i], NULL, &thread_function, (void*)arguments[i]);
+        int status = pthread_create(&threads[i], NULL, &thread_function_naive, (void*)arguments[i]);
         if (status != 0)
         {
             perror("thread initialisation");
@@ -191,4 +191,32 @@ double get_current_time()
     struct timespec now;
     clock_gettime(CLOCK_REALTIME, &now);
     return now.tv_sec + now.tv_nsec*1e-9;
+}
+
+
+/*---------------------------------------------*/
+
+// initializes NUM_THREADS threads and allocates their work.
+// workload is defined dynamically in parameters
+void initialize_threads_seminaive(size_t sz, int** a, int** b) {
+
+    param_t param; 
+
+    
+
+
+}
+
+
+int calculate_num_operations(size_t rows, size_t cols) {
+    size_t total_size = rows * cols;
+    size_t num_threads = total_size / NUM_THREADS;
+
+    printf("number of threads to be created: %d\n", num_threads);
+    return num_threads;
+}
+
+
+int calculate_rest_operations(size_t rows, size_t cols) {
+    int result = 
 }
