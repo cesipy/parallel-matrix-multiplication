@@ -5,3 +5,4 @@ a.out
 src/*.o
 test
 .DS_Store
+todo.md
