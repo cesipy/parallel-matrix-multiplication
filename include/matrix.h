@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <pthread.h>
+#include <string.h>
 
 #define MAX_RANDOM 100
 #define MIN_RANDOM -1
@@ -19,13 +20,17 @@ int** matrix_multiplication_squared(size_t rows, size_t cols, int** a, int** b);
 int** generate_matrix(size_t rows, size_t cols);
 void free_matrix(size_t rows, size_t cols, int** a);
 int** allocate_matrix(size_t rows, size_t cols);
-int initialize_threads_naive(int size, int** a, int** b);
+int initialize_threads_naive(int size, int** a, int** b, int** result);
 double get_current_time();
+void copy_matrix(size_t rows, size_t cols, int** a, int** b);
 
 
 // from new approach, also pretty naive, as it is not really dynamic
 int calculate_num_operations(size_t, size_t);
 int calculate_rest_operations(size_t, size_t);
+void* thread_function_seminaive(void* arg);
+int initialize_threads_seminaive(size_t sz, int** a, int** b, int** result);
+long long matrix_checksum(size_t rows, size_t cols, int** a);
 
 /* from test.c */
 
@@ -43,6 +48,7 @@ typedef struct {
     int a_i;
     int a_j;
     int sz;         // size for squared matrix
+    int num_rows;
 }param_t;
 
 
