@@ -1,5 +1,8 @@
 #include "../include/matrix.h"
 
+int** a;
+int** b;
+
 
 /**
  * performs a normal matrix mutliplication using one core. 
@@ -8,9 +11,6 @@
 */
 void multiplication_serial(size_t sz)
 {
-    int** a = generate_matrix(sz, sz);
-    int** b = generate_matrix(sz, sz);
-
     // measure exectution time
     double start  = get_current_time();
     int**  result = matrix_multiplication_squared(sz, sz, a, b);
@@ -19,8 +19,7 @@ void multiplication_serial(size_t sz)
     double diff = end - start;
     printf("exec. time: %f\n", diff);
 
-    free_matrix(sz, sz, a);
-    free_matrix(sz, sz, b);
+
     free_matrix(sz, sz, result);
 }
 
@@ -33,8 +32,6 @@ void multiplication_serial(size_t sz)
 */
 void multiplication_parallel_naive(size_t sz)
 {
-    int** a      = generate_matrix(sz, sz);
-    int** b      = generate_matrix(sz, sz);
     int** result = allocate_matrix(sz, sz);
 
     double start = get_current_time();
@@ -43,18 +40,13 @@ void multiplication_parallel_naive(size_t sz)
 
     double diff2 = end - start;
     printf("exec. time: %f\n", diff2);
-    //print_matrix(sz, sz, result);
 
-    free_matrix(sz, sz, a);
-    free_matrix(sz, sz, b);
     free_matrix(sz, sz, result);
 }
 
 
 void multiplication_parallel_seminaive(size_t sz) 
 {
-    int** a      = generate_matrix(sz, sz);
-    int** b      = generate_matrix(sz, sz);
     int** result = allocate_matrix(sz, sz);
 
     double start = get_current_time();
@@ -63,10 +55,7 @@ void multiplication_parallel_seminaive(size_t sz)
 
     double diff2 = end - start;
     printf("exec. time: %f\n", diff2);
-    //print_matrix(sz, sz, result);
 
-    free_matrix(sz, sz, a);
-    free_matrix(sz, sz, b);
     free_matrix(sz, sz, result);
 }
 
@@ -75,12 +64,13 @@ int main(int argc, char* argv[])
 {
     srand(time(0));
 
-    size_t sz = 1200;
+    size_t sz = 2500;
+    a = generate_matrix(sz, sz);
+    b = generate_matrix(sz, sz);
 
     printf("multiplication serial: \n");
     multiplication_serial(sz);
     printf("\n");
-
 
     printf("multiplication parallel: \n");
     // clock measures CPU time, as several threads are sed for computation
@@ -94,6 +84,9 @@ int main(int argc, char* argv[])
     printf("\n");
     printf("multiplication parallel-seminaive: \n");
     multiplication_parallel_seminaive(sz);
+
+    free_matrix(sz, sz, a);
+    free_matrix(sz, sz, b);
 
     return 0;
 }

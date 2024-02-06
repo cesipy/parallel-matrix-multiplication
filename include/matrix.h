@@ -11,7 +11,7 @@
 #define MIN_RANDOM -1
 
 #define PADDING 7
-#define NUM_THREADS 4     // how many threads are available on machine/ 
+#define NUM_THREADS 8     // how many threads are available on machine/ 
                           // or how many cores want to be used
 
 void print_matrix(size_t rows, size_t cols, int** matrix);
@@ -49,6 +49,7 @@ typedef struct {
     int a_j;
     int sz;         // size for squared matrix
     int num_rows;
+    int tid;
 }param_t;
 
 

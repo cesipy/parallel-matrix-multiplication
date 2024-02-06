@@ -69,6 +69,7 @@ void print_matrix(size_t rows, size_t cols, int** matrix)
     }
 }
 
+
 // multiplies two squared matrices.
 int** matrix_multiplication_squared(size_t rows, size_t cols, int** a, int** b)
 {
@@ -223,6 +224,7 @@ int initialize_threads_seminaive(size_t sz, int** a, int** b, int** result) {
         arguments[i]->a_i   = i * num_operations;
         arguments[i]->sz    = sz;
         arguments[i]->num_rows = num_operations;
+        arguments[i]->tid   = i;
     }
 
     // create threads
@@ -260,16 +262,18 @@ int initialize_threads_seminaive(size_t sz, int** a, int** b, int** result) {
 
 void* thread_function_seminaive(void* arg) {
     param_t* param = arg;
-    int** res = param->result_matrix;
-    int** a   = param->a;
-    int** b   = param->b;
-    int a_i   = param->a_i;
-    int a_j   = 0;
-    int sz    = param->sz;
-    int num_rows = param->num_rows;
-    int sum   = 0;
+    int** res      = param->result_matrix;
+    int** a        = param->a;
+    int** b        = param->b;
+    int a_i        = param->a_i;
+    int og_ai      = a_i;
+    int a_j        = 0;
+    int sz         = param->sz;
+    int num_rows   = param->num_rows;
+    int sum        = 0;
+    int tid        = param->tid;
 
-    printf("a_i in thread %d \n", a_i);
+    //printf("a_i in thread %d \n", a_i);
 
     for (int k=0; k<num_rows; k++)
     {
@@ -281,11 +285,11 @@ void* thread_function_seminaive(void* arg) {
                 sum += a[a_i][j] * b[j][i];
             }
             res[a_i][a_j] = sum;
-            a_j++;
-        
+            a_j+=1;
         }
-        //printf("reached for row %d \n", k);
-        a_i++;
+        //printf("%d reached for row %d (og a_i: %d, k: %d, sz: %d) \n", tid ,og_ai + k, og_ai, k, sz);
+        a_i+=1;
+        a_j = 0; // reset column index after each row
     }
     
     return NULL;
