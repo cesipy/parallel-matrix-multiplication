@@ -19,10 +19,8 @@ void multiplication_serial(size_t sz)
     double diff = end - start;
     printf("exec. time: %f\n", diff);
 
-
     free_matrix(sz, sz, result);
 }
-
 
 
 /**

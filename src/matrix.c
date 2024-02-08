@@ -13,6 +13,7 @@ int** generate_matrix(size_t rows, size_t cols)
     {
         for (int j=0; j<cols; j++)
         {
+            // generates matrix entries with values in the range {MIN_RANDOM, ..., MAX_RANDOM}
             int random_number = rand() %  (MAX_RANDOM +1 - MIN_RANDOM) + MIN_RANDOM;
             a[i][j] = random_number;
         }
@@ -21,7 +22,10 @@ int** generate_matrix(size_t rows, size_t cols)
     return a;
 }
 
-// free matrix
+
+/**
+ * frees matrix
+*/
 void free_matrix(size_t rows, size_t cols, int** a) 
 {
     for (int i=0; i<rows; i++)
@@ -32,7 +36,10 @@ void free_matrix(size_t rows, size_t cols, int** a)
     free(a);
 }
 
-// allocates matrix of of size `rows` x `cols`.
+
+/**
+ *  allocates matrix of of size `rows` x `cols`.
+*/
 int** allocate_matrix(size_t rows, size_t cols) 
 {
     int** a = (int**)malloc(rows * sizeof(int*));
@@ -58,7 +65,6 @@ int** allocate_matrix(size_t rows, size_t cols)
 
 void print_matrix(size_t rows, size_t cols, int** matrix)
 {
-
     for (int i=0; i<rows; i++) 
     {
         for (int j=0; j<cols; j++) 
@@ -70,7 +76,9 @@ void print_matrix(size_t rows, size_t cols, int** matrix)
 }
 
 
-// multiplies two squared matrices.
+/**
+ * multiplies two squared matrices, using the standard, unicore approach.
+*/
 int** matrix_multiplication_squared(size_t rows, size_t cols, int** a, int** b)
 {
     int** result_matrix = allocate_matrix(rows, cols);
@@ -91,6 +99,7 @@ int** matrix_multiplication_squared(size_t rows, size_t cols, int** a, int** b)
 
     return result_matrix;
 }
+
 
 // copies entries from matrix[][] to a int**
 // works good for test matrices, that are not dynamically allocated, 
@@ -135,8 +144,6 @@ void* thread_function_naive(void* arg)
 
 
 // creates a thread for each entry. therefore, `size` threads are created. 
-// because of the overhead for each thread, the current
-// implemetation is unperformant for more than 1000 rows. 
 int initialize_threads_naive(int size, int** a, int** b, int** result) 
 {
     int       num_threads = size;
@@ -175,10 +182,10 @@ int initialize_threads_naive(int size, int** a, int** b, int** result)
     for (int i=0; i<num_threads; i++)
     {
         int status = pthread_join(threads[i], NULL);
+        // TODO: error handling
     }
     copy_matrix(size, size, result_matrix, result);
     matrix_checksum(size, size, result_matrix);
-
 
     // free argument-array
     for (int i=0; i<num_threads; i++)
@@ -199,18 +206,20 @@ double get_current_time()
 }
 
 
-/*---------------------------------------------*/
 
-// initializes NUM_THREADS threads and allocates their work.
-// workload is defined dynamically in parameters
-// seminaive, as this approach only works for matrices with sz = NUM_THREADS * z
-// where z is an integer
+/**
+ * initializes NUM_THREADS threads and allocates their work.
+ * workload is defined dynamically in parameters
+ * seminaive, as this approach only works for matrices with sz = NUM_THREADS * z
+ * where z is an integer
+ * 
+ * works only for squared matrices of size `sz` where `sz` is a multiple of `NUM_THREADS`
+*/
 int initialize_threads_seminaive(size_t sz, int** a, int** b, int** result) {
 
     pthread_t threads[NUM_THREADS];
     param_t* arguments[NUM_THREADS];
     int num_operations = sz / NUM_THREADS;
-    printf("num of operations: %d \n", num_operations);
 
     int** result_matrix = allocate_matrix(sz, sz);
 
@@ -244,6 +253,7 @@ int initialize_threads_seminaive(size_t sz, int** a, int** b, int** result) {
     for (int i=0; i< NUM_THREADS; i++) 
     {
         int status = pthread_join(threads[i], NULL);
+        // TODO: error handling
     }
 
     copy_matrix(sz, sz, result_matrix, result);
@@ -260,6 +270,10 @@ int initialize_threads_seminaive(size_t sz, int** a, int** b, int** result) {
 }
 
 
+/**
+ * thread function for 'seminaive' implementation.
+ * 
+*/
 void* thread_function_seminaive(void* arg) {
     param_t* param = arg;
     int** res      = param->result_matrix;
@@ -271,9 +285,6 @@ void* thread_function_seminaive(void* arg) {
     int sz         = param->sz;
     int num_rows   = param->num_rows;
     int sum        = 0;
-    int tid        = param->tid;
-
-    //printf("a_i in thread %d \n", a_i);
 
     for (int k=0; k<num_rows; k++)
     {
@@ -285,14 +296,41 @@ void* thread_function_seminaive(void* arg) {
                 sum += a[a_i][j] * b[j][i];
             }
             res[a_i][a_j] = sum;
-            a_j+=1;
+            a_j+= 1;
         }
-        //printf("%d reached for row %d (og a_i: %d, k: %d, sz: %d) \n", tid ,og_ai + k, og_ai, k, sz);
-        a_i+=1;
+        a_i+= 1;
         a_j = 0; // reset column index after each row
     }
     
     return NULL;
+}
+
+
+/**
+ * copies `soure` matrix to `destination` matrix pointer.
+*/
+void copy_matrix(size_t rows, size_t cols, int** source, int** destination) {
+    for (int i=0; i<rows; i++) {
+        for (int j=0; j<cols; j++) {
+            destination[i][j] = source[i][j];
+        }
+    }
+}
+
+
+unsigned long long matrix_checksum(size_t rows, size_t cols, int** a) 
+{
+    long long checksum = 0;
+    for (int i=0; i<rows; i++) 
+    {
+        for (int j=0; j<cols; j++) 
+        {
+            checksum+= a[i][j];
+        }
+    }
+
+    printf("checksum: %lld \n", checksum);
+    return checksum;
 }
 
 
@@ -307,29 +345,4 @@ int calculate_num_operations(size_t rows, size_t cols) {
 
 int calculate_rest_operations(size_t rows, size_t cols) {
     return 1;
-}
-
-
-void copy_matrix(size_t rows, size_t cols, int** source, int** destination) {
-    for (int i=0; i<rows; i++) {
-        for (int j=0; j<cols; j++) {
-            destination[i][j] = source[i][j];
-        }
-    }
-}
-
-
-long long matrix_checksum(size_t rows, size_t cols, int** a) 
-{
-    long long checksum = 0;
-    for (int i=0; i<rows; i++) 
-    {
-        for (int j=0; j<cols; j++) 
-        {
-            checksum+= a[i][j];
-        }
-    }
-
-    printf("checksum: %lld \n", checksum);
-    return checksum;
 }

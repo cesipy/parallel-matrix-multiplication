@@ -30,7 +30,7 @@ int calculate_num_operations(size_t, size_t);
 int calculate_rest_operations(size_t, size_t);
 void* thread_function_seminaive(void* arg);
 int initialize_threads_seminaive(size_t sz, int** a, int** b, int** result);
-long long matrix_checksum(size_t rows, size_t cols, int** a);
+unsigned long long matrix_checksum(size_t rows, size_t cols, int** a);
 
 /* from test.c */
 
