@@ -48,5 +48,7 @@ exec. time: 106.235075
 cpu uptime: 769.289494
 ```
 
+### Seminaive approach
 
+Somehow, the 'seminaive' approach is slower than the 'naive' approach. Here the 'naive' approach is to create a thread for each row, while the seminaive approach creates only a specified number of threads. this is specified using `NUM_THREADS`.
 
