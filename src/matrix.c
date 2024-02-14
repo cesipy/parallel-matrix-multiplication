@@ -101,6 +101,32 @@ int** matrix_multiplication_squared(size_t rows, size_t cols, int** a, int** b)
 }
 
 
+/**
+ * multiplies two matrixes. checks if mutliplication is possible - are dimensions matching?
+*/
+int** matrix_multiplication(size_t rows1, size_t cols1, size_t rows2, size_t cols2, int** a, int** b) 
+{
+
+    int** result_matrix = allocate_matrix(rows1, cols2);  
+    int sum;
+
+    for (int i=0; i<rows1; i++) 
+    {
+        for (int j=0; j<cols2; j++) 
+        {
+            sum = 0;
+            for (int k=0; k<cols1; k++)
+            {
+                sum += a[i][k] * b[k][j];
+            }
+            result_matrix[i][j] = sum;
+        }
+    }
+
+    return result_matrix;
+}
+
+
 // copies entries from matrix[][] to a int**
 // works good for test matrices, that are not dynamically allocated, 
 // but need dynamic allocation for each thread, so they can work on one matrix in parallel.
@@ -161,7 +187,6 @@ int initialize_threads_naive(int size, int** a, int** b, int** result)
         arguments[i]->result_matrix = result_matrix;
         arguments[i]->a_i = i;
         arguments[i]->sz = size;
-
     }
 
     // initialize threads
@@ -345,4 +370,13 @@ int calculate_num_operations(size_t rows, size_t cols) {
 
 int calculate_rest_operations(size_t rows, size_t cols) {
     return 1;
+}
+
+/**
+ * mxn * n'xp => mxp 
+ * is n = n'?
+*/
+int check_matrix_dimensions(size_t rows1, size_t cols1, size_t rows2, size_t cols2)
+{
+    return cols1 == rows2;
 }

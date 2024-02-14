@@ -4,6 +4,18 @@ int** a;
 int** b;
 
 
+void mutliplication_serial_nonsquared(size_t row1, size_t col1, size_t row2, size_t col2)
+{
+    int status = check_matrix_dimensions(row1, col1, row2, col2);
+    if (status == 0) 
+    {
+        perror("dimension mismatch");
+        return;         // dimensions are not matching
+    }
+
+    
+}
+
 /**
  * performs a normal matrix mutliplication using one core. 
  * is the minimal implementation for a correct computation.
@@ -61,8 +73,9 @@ void multiplication_parallel_seminaive(size_t sz)
 int main(int argc, char* argv[]) 
 {
     srand(time(0));
+    
 
-    size_t sz = 2500;
+    size_t sz = 1000;
     a = generate_matrix(sz, sz);
     b = generate_matrix(sz, sz);
 
@@ -85,6 +98,17 @@ int main(int argc, char* argv[])
 
     free_matrix(sz, sz, a);
     free_matrix(sz, sz, b);
+
+    a = generate_matrix(20, 10);
+    b = generate_matrix(10, 40);
+    int** result = allocate_matrix(20, 40);
+
+    result = matrix_multiplication(20, 10, 10, 40, a, b);
+    //print_matrix(20, 40, result);
+
+    free_matrix(20, 10, a);
+    free_matrix(10, 40, b);
+    free_matrix(20, 40, result);
 
     return 0;
 }

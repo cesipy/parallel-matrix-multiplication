@@ -23,6 +23,8 @@ int** allocate_matrix(size_t rows, size_t cols);
 int initialize_threads_naive(int size, int** a, int** b, int** result);
 double get_current_time();
 void copy_matrix(size_t rows, size_t cols, int** a, int** b);
+int check_matrix_dimensions(size_t, size_t, size_t, size_t);
+int** matrix_multiplication(size_t, size_t, size_t, size_t, int** a, int** b);
 
 
 // from new approach, also pretty naive, as it is not really dynamic
